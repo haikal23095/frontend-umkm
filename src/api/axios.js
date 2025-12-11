@@ -20,4 +20,18 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+// Response interceptor untuk handle error 401
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            // Token expired atau invalid
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default api;

@@ -1,10 +1,10 @@
-import { axiosInstance, API_ENDPOINTS } from '../config/api';
+import api from '../api/axios';
 import { setAuthToken, setUser, clearAuth } from '../utils/auth';
 
 export const authService = {
     // Login
     async login(email, password) {
-        const response = await axiosInstance.post(API_ENDPOINTS.LOGIN, {
+        const response = await api.post('/login', {
             email,
             password,
         });
@@ -21,7 +21,7 @@ export const authService = {
 
     // Register
     async register(name, email, password, password_confirmation) {
-        const response = await axiosInstance.post(API_ENDPOINTS.REGISTER, {
+        const response = await api.post('/register', {
             name,
             email,
             password,
@@ -41,7 +41,7 @@ export const authService = {
     // Logout
     async logout() {
         try {
-            await axiosInstance.post(API_ENDPOINTS.LOGOUT);
+            await api.post('/logout');
         } catch (error) {
             console.error('Logout error:', error);
         } finally {
@@ -51,7 +51,7 @@ export const authService = {
 
     // Get current user
     async getCurrentUser() {
-        const response = await axiosInstance.get(API_ENDPOINTS.GET_USER);
+        const response = await api.get('/user');
         if (response.data.success) {
             const user = response.data.data;
             setUser(user);
